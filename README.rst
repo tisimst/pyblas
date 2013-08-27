@@ -21,6 +21,6 @@ Any questions, comments, bug reporting, etc can be forwarded to the author:
 `Abraham Lee`_
 
 
-.. BLAS: http://www.netlib.org/blas/
-.. Abraham Lee: mailto:tisimst@gmail.com
+.. _BLAS: http://www.netlib.org/blas/
+.. _Abraham Lee: mailto:tisimst@gmail.com
 
