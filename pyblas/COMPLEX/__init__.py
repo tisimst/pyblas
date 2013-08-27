@@ -1,11 +1,11 @@
 """
 ================================================================================
-PYBLAS: The BLAS implementation in pure Python
+pyblas: Pure-python BLAS translation
 ================================================================================
 
 Author: Abraham Lee
 Copyright: 2013
 
 """
-import pyblas_complex
-from pyblas_complex import *
+
+from .pyblas_complex import *

@@ -1,5 +1,9 @@
 """
-Python translation of all the COMPLEX subroutines of the Fortran BLAS library
+================================================================================
+pyblas: Pure-python BLAS translation
+================================================================================
+
+Translation of all the COMPLEX subroutines of the Fortran BLAS library
 (both Cxxxx and Zxxxx). Since python doesn't distinguish between the Fortran
 COMPLEX and COMPLEX16 data types, the author did not feel it necessary to
 define separate subroutines, but simply alias the SINGLE precision to the
@@ -15,7 +19,7 @@ BLAS 3.4.2
 """
 import copy
 import cmath
-from auxsub import *
+from pyblas.AUXILIARY import *
 
 __all__ = []
 

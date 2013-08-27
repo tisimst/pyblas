@@ -1,5 +1,13 @@
 """
+================================================================================
+pyblas: Pure-python BLAS translation
+================================================================================
+
 This file contains auxiliary subroutines needed by the pyBLAS package
+
+Author: Abraham Lee
+Copyright: 2013
+
 """
 
 __all__ = []  # add function names as they are defined
@@ -27,7 +35,13 @@ __all__.append('xerbla')
 ################################################################################
 
 def dcabs1(z):
-    return abs(z.real) + abs(z.imag)
+    """
+    Calculate the absolute value of a complex number ``z`` defined as::
+    
+        res = |real(z)| + |imag(z)|
+        
+    """
+    return abs(1.0*z.real) + abs(1.0*z.imag)
 
 __all__.append('dcabs1')
     

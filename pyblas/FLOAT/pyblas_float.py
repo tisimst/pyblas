@@ -18,7 +18,7 @@ BLAS 3.4.2
 """
 import copy
 import math
-from pyblas_auxsub import *
+from pyblas.AUXILIARY import *
 
 __all__ = []
 
