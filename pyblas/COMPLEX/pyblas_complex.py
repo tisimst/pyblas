@@ -4,9 +4,9 @@ pyblas: Pure-python BLAS translation
 ================================================================================
 
 Translation of all the COMPLEX subroutines of the Fortran BLAS library
-(both Cxxxx and Zxxxx). Since python doesn't distinguish between the Fortran
-COMPLEX and COMPLEX16 data types, the author did not feel it necessary to
-define separate subroutines, but simply alias the SINGLE precision to the
+(both Cxxxx and Zxxxx). Since python only has one COMPLEX type (unlike the 
+Fortran COMPLEX and COMPLEX16 data types), the author did not feel it necessary 
+to define separate subroutines, but simply alias the SINGLE precision to the
 DOUBLE precision versions.
 
 Author: Abraham Lee
@@ -24,7 +24,135 @@ from pyblas.AUXILIARY import *
 __all__ = []
 
 ################################################################################
-# VERIFIED
+
+def dznrm2(n, x, incx):
+    """
+    Calculate the euclidian norm of a vector such that
+    
+        dznrm2 := sqrt(x**H*x)
+    
+    Parameters
+    ----------
+    incx : int
+    n : int
+        Array length of ``x``
+    x : complex array
+    
+    Original Group
+    --------------
+    complex16_blas_level1
+    
+    """
+    one = 1.0
+    zero = 0.0
+    
+    if n<1 or incx<1:
+        norm = zero
+    else:
+        scale = zero
+        ssq = one
+        # The following loop is equivalent to this call to the LAPACK auxiliary
+        # routine: zlassq(n, x, incx, scale, ssq)
+        for ix in xrange(0, (n - 1)*incx, incx):
+            if dble(x[ix])!=zero:
+                temp = abs(dble(x[ix]))
+                if scale<temp:
+                    ssq = one + ssq*(scale/temp)**2
+                    scale = temp
+                else:
+                    ssq = ssq + (temp/scale)**2
+            if dimag(x[ix])!=zero:
+                temp = abs(dimag(x[ix]))
+                if scale<temp:
+                    ssq = one+ssq*(scale/temp)**2
+                    scale = temp
+                else:
+                    ssq = ssq + (temp/scale)**2
+        norm = scale*sqrt(ssq)
+        
+    return norm
+
+__all__.append('dznrm2')
+
+################################################################################
+
+def dzasum(n, zx, incx):
+    """
+    Takes the sume of the absolute values
+    
+    Parameters
+    ----------
+    incx : int
+    n : int
+        Array length of ``zx``
+    zx : complex array
+    
+    Original Group
+    --------------
+    complex16_blas_level1
+    
+    """
+    stemp = 0.0
+    if n<=0 or incx<=0:
+        return 0.0
+    if incx==1:
+        # Code for increment equal to 1
+        for i in xrange(n):
+            stemp = stemp + dcabs1(zx[i])
+    else:
+        # Code for increment not equal to 1
+        nincx = n*incx
+        for i in xrange(0, nincx, incx):
+            stemp = stemp + dcabs1(zx[i])
+    
+    return stemp
+
+__all__.append('dzasum')
+
+################################################################################
+
+def izamax(n, zx, incx):
+    """
+    Finds the index of element having max absolute value.
+    
+    Parameters
+    ----------
+    incx : int
+    n : int
+        Array length of ``zx``
+    zx : complex array
+    
+    Original Group
+    --------------
+    aux_blas
+    
+    """
+    if n<=1 or incx<=0:
+        return -1
+    if n==1:
+        return 0
+    if incx==1:
+        # Code for increment equal to 1
+        dmax = dcabs1(zx[0])
+        for i in xrange(1, n):
+            if dcabs1(zx[i])>dmax:
+                dmax = dcabs1(zx[i])
+    else:
+        # Code for increment not equal to 1
+        ix = 0
+        dmax = dcabs1(zx[0])
+        ix = ix + incx
+        for i in xrange(1, n):
+            if dcabs1(zx[ix])>dmax:
+                dmax = dcabs1(zx[ix])
+            ix = ix + incx
+        
+    return dmax
+
+__all__.append('izamax')
+
+################################################################################
+
 def zaxpy(n, za, zx, incx, zy, incy):
     """
     Constant times a vector plus a vector.
@@ -69,7 +197,7 @@ caxpy = zaxpy
 __all__.append('caxpy'); __all__.append('zaxpy')
 
 ################################################################################
-# VERIFIED
+
 def zcopy(n, zx, incx, zy, incy):
     """
     Copies a vector, zx, to a vector, zy.
@@ -111,7 +239,7 @@ ccopy = zcopy
 __all__.append('ccopy'); __all__.append('zcopy')
 
 ################################################################################
-# VERIFIED
+
 def zdotc(n, zx, incx, zy, incy):
     """
     Forms the dot product of a vector
@@ -155,7 +283,7 @@ cdotc = zdotc
 __all__.append('cdotc'); __all__.append('zdotc')
 
 ################################################################################
-# VERIFIED
+
 def zdotu(n, zx, incx, zy, incy):
     """
     Forms the dot product of two vectors
@@ -198,7 +326,7 @@ cdotu = zdotu
 __all__.append('cdotu'); __all__.append('zdotu')
 
 ################################################################################
-# VERIFIED
+
 def zdrot(n, cx, incx, cy, incy, c, s):
     """
     Applies a plane rotation, where the cos and sin (c and s) are real and
@@ -260,7 +388,7 @@ cdrot = zdrot
 __all__.append('cdrot'); __all__.append('zdrot')
 
 ################################################################################
-# VERIFIED
+
 def zdscal(n, da, zx, incx):
     """
     Scales a vector by a constant
