@@ -134,12 +134,22 @@ __all__.append('dconjg')
 
 def dble(x):
     """
-    Convert ``x`` to a float
+    Return the real part of ``x`` as a float
     """
     return 1.0*x.real
 
 __all__.append('dble')
 
+################################################################################
+
+def dimag(x):
+    """
+    Return the imaginary part of ``x`` as a float
+    """
+    return 1.0*x.imag
+
+__all__.append('dimag')
+    
 ################################################################################
 
 def dcomplx(x):
