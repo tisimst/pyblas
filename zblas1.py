@@ -5,7 +5,6 @@ import sys
 from pyblas.COMPLEX import *
 from pyblas.AUXILIARY import *
 
-
 SFAC = 9.765625e-4
 
 EPSILON = sys.float_info.epsilon
@@ -512,5 +511,6 @@ for ic in xrange(10):
     if PASS:
         print '                                    ----- PASS -----'
 
-exit()
+################################################################################
 
+print ' TESTING COMPLETE.'
