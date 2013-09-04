@@ -53,7 +53,7 @@ def dznrm2(n, x, incx):
         ssq = one
         # The following loop is equivalent to this call to the LAPACK auxiliary
         # routine: zlassq(n, x, incx, scale, ssq)
-        for ix in xrange(0, (n - 1)*incx, incx):
+        for ix in xrange(0, 1 + (n - 1)*incx, incx):
             if dble(x[ix])!=zero:
                 temp = abs(dble(x[ix]))
                 if scale<temp:
@@ -68,7 +68,7 @@ def dznrm2(n, x, incx):
                     scale = temp
                 else:
                     ssq = ssq + (temp/scale)**2
-        norm = scale*sqrt(ssq)
+        norm = scale*(ssq)**0.5
         
     return norm
 
@@ -127,27 +127,31 @@ def izamax(n, zx, incx):
     aux_blas
     
     """
-    if n<=1 or incx<=0:
+    if n<1 or incx<=0:
         return -1
     if n==1:
         return 0
     if incx==1:
         # Code for increment equal to 1
         dmax = dcabs1(zx[0])
+        idx = 0
         for i in xrange(1, n):
             if dcabs1(zx[i])>dmax:
                 dmax = dcabs1(zx[i])
+                idx = i
     else:
         # Code for increment not equal to 1
         ix = 0
         dmax = dcabs1(zx[0])
+        idx = 0
         ix = ix + incx
         for i in xrange(1, n):
             if dcabs1(zx[ix])>dmax:
                 dmax = dcabs1(zx[ix])
+                idx = i
             ix = ix + incx
         
-    return dmax
+    return idx
 
 __all__.append('izamax')
 
@@ -183,10 +187,10 @@ def zaxpy(n, za, zx, incx, zy, incy):
         # Code for unequal increments or equal increments not equal to 1
         ix = 0
         iy = 0
-        if incx < 0:
+        if incx<0:
             ix = (-n + 1)*incx
         if incy<0:
-            iy = (-n + 1)*incx
+            iy = (-n + 1)*incy
         for i in xrange(n):
             zy[iy] = zy[iy] + za*zx[ix]
             ix = ix + incx
@@ -3233,11 +3237,11 @@ def zswap(n, zx, incx, zy, incy):
         for i in xrange(n):
             ztemp = zx[i]
             zx[i] = zy[i]
-            zy[i] = temp
+            zy[i] = ztemp
     else:
         # Code for unequal increments or equal increments not equal to 1
-        ix = 1
-        iy = 1
+        ix = 0
+        iy = 0
         if incx<0:
             ix = (1 - n)*incx
         if incy<0:
