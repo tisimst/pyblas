@@ -1,7 +1,7 @@
 """
 Test program for the COMPLEX Level 1 BLAS.
 """
-import sys
+import sys, os
 
 sys.path.insert(0, os.path.abspath('..'))
 
