@@ -2,6 +2,9 @@
 Test program for the COMPLEX Level 1 BLAS.
 """
 import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+
 from pyblas.COMPLEX import *
 from pyblas.AUXILIARY import *
 
